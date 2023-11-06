@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
 declare module "axios" {
-  interface AxiosInstance<T = any, D = any> {
+  interface AxiosInstance<T = any, D = any, P = any> {
     create<T>(config?: CreateAxiosDefaults): AxiosInstance<T>;
 
     interceptors: {
@@ -9,7 +9,7 @@ declare module "axios" {
       response: AxiosInterceptorManager<AxiosResponse<T, D>>;
     };
 
-    get<P = any, T = any, R = AxiosResponse<T>, D = any>(
+    get<T = any, R = AxiosResponse<T>, D = any>(
       url: string,
       config?: MyAxiosRequestConfig<D, P>
     ): Promise<R>;
@@ -18,28 +18,14 @@ declare module "axios" {
   interface MyAxiosRequestConfig<D, P> extends AxiosRequestConfig<D> {
     params?: P;
   }
-
-  interface Axios {
-    get<P = any, T = any, R = AxiosResponse<T>, D = any>(
-      url: string,
-      config?: MyAxiosRequestConfig<D, P>
-    ): Promise<R>;
-  }
-  interface AxiosRequestConfig<D = any> {}
 }
 
-const magic = <Params, T = any, D = any>(
-  buildParams: (params: Params) => string,
-  params: Params
-) => {
-  const instance: AxiosInstance<T, D> = axios.create();
-  const url = buildParams(params);
+const magic = <T = any, D = any, P = any>() => {
+  const instance: AxiosInstance<T, D, P> = axios.create();
   return instance;
 };
 
-const instance = magic<{ id: 1 }, { password: 2 }>((id) => "https://" + id, {
-  id: 1,
-});
+const instance = magic<{ id: 1 }, { password: 2 }, { body: 1 }>();
 
 instance.interceptors.request.use(
   function (request) {
@@ -62,7 +48,7 @@ instance.interceptors.response.use(
   }
 );
 
-instance.get<{ body: 1 }>("", {
+instance.get("", {
   params: {
     body: 1,
   },
