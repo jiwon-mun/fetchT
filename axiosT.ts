@@ -20,8 +20,8 @@ declare module "axios" {
   }
 }
 
-const magic = <T = any, D = any, P = any>() => {
-  const instance: AxiosInstance<T, D, P> = axios.create();
+const magic = <FirstResponse = any, Request = any, BODY = any>() => {
+  const instance: AxiosInstance<FirstResponse, Request, BODY> = axios.create();
   return instance;
 };
 
@@ -48,8 +48,13 @@ instance.interceptors.response.use(
   }
 );
 
-instance.get("", {
-  params: {
-    body: 1,
-  },
-});
+(async()=> {
+  const {data} = await instance.get<{name: 1}>("", {
+    params: {
+      body: 1
+    },
+  });
+
+
+  data.name
+})
