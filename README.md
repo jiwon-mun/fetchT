@@ -1,5 +1,7 @@
 # fetchT
 
+The way which is perfect type-safe fetch
+
 Basic(fetchT)
 
 ```ts
