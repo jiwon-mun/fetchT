@@ -5,7 +5,7 @@ declare module "axios" {
     create<T>(config?: CreateAxiosDefaults): AxiosInstance<T>;
 
     interceptors: {
-      request: AxiosInterceptorManager<InternalAxiosRequestConfig<D>>;
+      request: AxiosInterceptorManager<InternalAxiosRequestConfig<D, P>>;
       response: AxiosInterceptorManager<AxiosResponse<T, D>>;
     };
 
@@ -13,6 +13,10 @@ declare module "axios" {
       url: string,
       config?: MyAxiosRequestConfig<D, P>
     ): Promise<R>;
+  }
+
+  interface InternalAxiosRequestConfig<D, P = any> {
+    params?: P
   }
 
   interface MyAxiosRequestConfig<D, P> extends AxiosRequestConfig<D> {
@@ -25,12 +29,12 @@ const createInstance = <FirstResponse = any, Request = any, BODY = any>() => {
   return instance;
 };
 
-const instance = createInstance<{ id: 1 }, { password: 2 }, { body: 1 }>();
+const instance = createInstance<{ resData: 1 }, { bodyParam: 2 }, { queryParam: 3 }>();
 
 instance.interceptors.request.use(
   function (request) {
-    request.params;
-    request.data?.password;
+    request.data?.bodyParam;
+    request.params?.queryParam
     return request;
   },
   function (error) {
@@ -48,13 +52,17 @@ instance.interceptors.response.use(
   }
 );
 
+interface FinalResponse {
+  finalRes: 1
+}
+
 (async()=> {
-  const {data} = await instance.get<{name: 1}>("", {
+  const {data} = await instance.get<FinalResponse>("", {
     params: {
-      body: 1
+      queryParam: 3
     },
   });
 
 
-  data.name
+  data.finalRes
 })
