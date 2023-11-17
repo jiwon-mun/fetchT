@@ -20,12 +20,12 @@ declare module "axios" {
   }
 }
 
-const magic = <FirstResponse = any, Request = any, BODY = any>() => {
+const createInstance = <FirstResponse = any, Request = any, BODY = any>() => {
   const instance: AxiosInstance<FirstResponse, Request, BODY> = axios.create();
   return instance;
 };
 
-const instance = magic<{ id: 1 }, { password: 2 }, { body: 1 }>();
+const instance = createInstance<{ id: 1 }, { password: 2 }, { body: 1 }>();
 
 instance.interceptors.request.use(
   function (request) {
