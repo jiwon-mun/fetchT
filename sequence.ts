@@ -26,7 +26,7 @@ const joinStringWithRequestInit =  withRequestInit({
 // [string, Requestinit] => Promise<Response>
     // Promise<Response> => Promise<Response<Interceptor>>
 // Promise<Response<any>>
-const hwahaeFetch = flow(
+const myFetch = flow(
     joinStringWithRequestInit, // (string, string) => [string, RequestInit]
     ([string, requestInit]) => fetch(string, requestInit), // [string, RequestInit] => Promise<Response>
     // interceptor,
@@ -34,7 +34,7 @@ const hwahaeFetch = flow(
 )
 
 
-const result = hwahaeFetch('https://jsonplaceholder.typicode.com/', 'todos/1')
+const result = myFetch('https://jsonplaceholder.typicode.com/', 'todos/1')
 
 
 result.then(console.log)
