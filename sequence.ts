@@ -5,12 +5,9 @@ import { flow } from "@mobily/ts-belt";
 
 const processReponse = async (response: Promise<Response>): Promise<any> => {
     const resolvePromise = await response
-
     if (resolvePromise.ok === false) {
         throw new Error('Failed to fetch data');
     }
-
-    // // 4. JSON 타입으로 정규화한다.
     return resolvePromise.json();
 }
 
@@ -20,8 +17,7 @@ const withRequestInit = (requestInit: RequestInit) => (baseURL: string, path: st
 
 const joinStringWithRequestInit =  withRequestInit({
     headers: {
-        'hwahae-main-web-api-token': process.env.HWAHAE_MAIN_WEB_API_TOKEN || '',
-        'hwahae-user-id': process.env.HWAHAE_USER_ID || '',
+        'signiture': process.env.SIG || '',
     },
 })
 
