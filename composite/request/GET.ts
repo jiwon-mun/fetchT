@@ -1,5 +1,7 @@
 import { MyRequest } from "./types"
 
+//  [Info, Init]
+
 const GET = <P>(baseURL: string, makePath: (params: P)=> string) => (params: P): MyRequest =>  {
     return [`${baseURL}${makePath(params)}`, {}]
 }
